@@ -18,11 +18,11 @@ public interface ISpecification {
 	 * 
 	 * @return
 	 */
-	public Class<?>[] getParameterTypes();
+	public ParameterType<?>[] getParameterTypes();
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public Class<?> getReturnType();;
+	public ParameterType<?> getReturnType();;
 }
