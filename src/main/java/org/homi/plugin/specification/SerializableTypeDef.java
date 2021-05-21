@@ -7,9 +7,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.function.Predicate;
 
-public class SerializableType<T extends Serializable> extends Type<T> {
+public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 
-	public SerializableType(Class<T> c, Predicate<T>...constraints) {
+	public SerializableTypeDef(Class<T> c, Predicate<T>...constraints) {
 		super(c, constraints);
 	}
 	

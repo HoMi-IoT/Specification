@@ -12,12 +12,12 @@ public final class SpecificationHelper {
 //		return (Type<?>[]) types.toArray();
 //	}
 	
-	public static Type<?> processType(Object parameterType) throws Exception {
-		if(parameterType instanceof Type)
-			return (Type<?>) parameterType;
+	public static TypeDef<?> processType(Object parameterType) throws Exception {
+		if(parameterType instanceof TypeDef)
+			return (TypeDef<?>) parameterType;
 
 		if(parameterType instanceof Class<?>)
-			return new Type<>((Class<?>)parameterType);
+			return new TypeDef<>((Class<?>)parameterType);
 		throw new Exception(); 
 	}
 }

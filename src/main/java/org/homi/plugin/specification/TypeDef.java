@@ -3,12 +3,12 @@ package org.homi.plugin.specification;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class Type<T> {
+public class TypeDef<T> {
 
 	protected Class<T> c;
 	private List<Predicate<T>> constraints;
 
-	public Type(Class<T> c, Predicate<T>...constraints) {
+	public TypeDef(Class<T> c, Predicate<T>...constraints) {
 		this.c = c;
 		this.constraints = List.of(constraints);
 	}
