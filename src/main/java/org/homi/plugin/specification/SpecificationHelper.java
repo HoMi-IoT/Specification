@@ -1,9 +1,20 @@
 package org.homi.plugin.specification;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
-public final class SpecificationHelper {
+public abstract class SpecificationHelper {
+	
+	public static <T> TypeDef<T> defineType(Class<T> type, Predicate<T>...constraints){
+		return new TypeDef<T>(type, constraints);
+	}
+	
+	public static <T extends Serializable> SerializableTypeDef<T> defineSerializableType(Class<T> type, Predicate<T>...constraints){
+		return new SerializableTypeDef<T>(type, constraints);
+	}
+
 	public static List<TypeDef<?>> processTypes(Object[] parameterTypes) throws Exception {
 		List<TypeDef<?>> types = new ArrayList<>();
 		for(Object parameterType: parameterTypes) {
@@ -17,7 +28,6 @@ public final class SpecificationHelper {
 			return (TypeDef<?>) parameterType;
 		if(parameterType instanceof Class<?>)
 			return new TypeDef<>((Class<?>)parameterType);
-		
 		throw new Exception(); 
 	}
 }
