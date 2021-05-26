@@ -12,8 +12,8 @@ import org.homi.plugin.specification.exceptions.InvalidArgumentException;
 
 public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 
-	public SerializableTypeDef(Class<T> c, Predicate<T>...constraints) {
-		super(c, constraints);
+	public SerializableTypeDef(Class<T> type, Predicate<T>...constraints) {
+		super(type, constraints);
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 			Object temp = ois.readObject();
 			ois.close();
 			bais.close();
-			return this.c.cast(temp);
+			return this.getType().cast(temp);
 		} catch (IOException | ClassNotFoundException e) {
 			throw new InvalidArgumentException("Error serializing  type ["+Serializable.class.getName()+" to "+ Object.class.getName() +"]", e);
 		}

@@ -7,21 +7,21 @@ import org.homi.plugin.specification.exceptions.InvalidArgumentException;
 
 public class TypeDef<T> {
 
-	protected Class<T> c;
+	private Class<T> type;
 	private List<Predicate<T>> constraints;
 
-	public TypeDef(Class<T> c, Predicate<T>...constraints) {
-		this.c = c;
+	public TypeDef(Class<T> type, Predicate<T>...constraints) {
+		this.type = type;
 		this.constraints = List.of(constraints);
 	}
 	
 	public T process(Object obj) throws InvalidArgumentException {
 		try {
-			T value = this.c.cast(obj);
+			T value = this.type.cast(obj);
 			this.validateConstraints(value);
 			return value;
 		} catch(ClassCastException e) {
-			throw new InvalidArgumentException("Argument type does not match specification [ expected "+ c.getName() +"but received" +obj.getClass().getName()+"]" ,e);
+			throw new InvalidArgumentException("Argument type does not match specification [ expected "+ type.getName() +"but received" +obj.getClass().getName()+"]" ,e);
 		}
 	}
 	
@@ -33,7 +33,7 @@ public class TypeDef<T> {
 		}
 	}
 	
-	public Class<T> getTypeClass() {
-		return c;
+	public Class<T> getType() {
+		return type;
 	}
 }

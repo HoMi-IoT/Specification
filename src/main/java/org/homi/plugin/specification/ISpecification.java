@@ -1,5 +1,7 @@
 package org.homi.plugin.specification;
 
+import java.util.List;
+
 /**
  * 
  * @author Nicolas Hanout
@@ -18,7 +20,7 @@ public interface ISpecification {
 	 * 
 	 * @return
 	 */
-	public TypeDef<?>[] getParameterTypes();
+	public List<TypeDef<?>> getParameterTypes();
 	
 	/**
 	 * 
