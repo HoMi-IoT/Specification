@@ -12,6 +12,7 @@ import org.homi.plugin.specification.exceptions.InvalidArgumentException;
 
 public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 
+	@SafeVarargs
 	public SerializableTypeDef(Class<T> type, Predicate<T>... constraints) {
 		super(type, constraints);
 	}
@@ -22,13 +23,13 @@ public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 			throw new InvalidArgumentException("Expected argument of type [" + Serializable.class.getName()
 					+ " but received type" + Object.class.getName() + "]");
 		}
-		return srializaThenDecerialize(obj);
+		return srializeThenDecerialize(obj);
 	}
 
-	private T srializaThenDecerialize(Object obj) throws InvalidArgumentException {
+	private T srializeThenDecerialize(Object obj) throws InvalidArgumentException {
 		try {
-			byte[] serial = serialize(obj);
-			Object temp = decerialize(serial);
+			byte[] serial = serializeToByteArray(obj);
+			Object temp = decerializeFromByteArray(serial);
 			return this.getType().cast(temp);
 		} catch (IOException | ClassNotFoundException e) {
 			throw new InvalidArgumentException(
@@ -36,7 +37,7 @@ public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 		}
 	}
 
-	private byte[] serialize(Object obj) throws IOException {
+	private byte[] serializeToByteArray(Object obj) throws IOException {
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(baos)) {
 			oos.writeObject(obj);
@@ -44,7 +45,7 @@ public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 		}
 	}
 	
-	private Object decerialize(byte[] serial) throws IOException, ClassNotFoundException {
+	private Object decerializeFromByteArray(byte[] serial) throws IOException, ClassNotFoundException {
 		try (ByteArrayInputStream bais = new ByteArrayInputStream(serial);
 				ObjectInputStream ois = new ObjectInputStream(bais)) {
 			Object temp = ois.readObject();

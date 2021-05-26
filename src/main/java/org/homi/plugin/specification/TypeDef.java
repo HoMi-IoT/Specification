@@ -10,6 +10,7 @@ public class TypeDef<T> {
 	private Class<T> type;
 	private List<Predicate<T>> constraints;
 
+	@SafeVarargs
 	public TypeDef(Class<T> type, Predicate<T>...constraints) {
 		this.type = type;
 		this.constraints = List.of(constraints);
