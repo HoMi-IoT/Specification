@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class Constraints {
+public abstract class Constraints {
 	
 	public static <T extends Object> Predicate<T> not(Predicate<T> p) {
 		return (t) -> { return !p.test(t);};
