@@ -7,10 +7,12 @@ import java.util.function.Predicate;
 
 public abstract class SpecificationHelper {
 	
+	@SafeVarargs
 	public static <T> TypeDef<T> defineType(Class<T> type, Predicate<T>...constraints){
 		return new TypeDef<T>(type, constraints);
 	}
 	
+	@SafeVarargs
 	public static <T extends Serializable> SerializableTypeDef<T> defineSerializableType(Class<T> type, Predicate<T>...constraints){
 		return new SerializableTypeDef<T>(type, constraints);
 	}
