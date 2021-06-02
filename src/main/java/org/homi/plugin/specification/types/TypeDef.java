@@ -1,4 +1,4 @@
-package org.homi.plugin.specification;
+package org.homi.plugin.specification.types;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -16,7 +16,7 @@ public class TypeDef<T> {
 		this.constraints = List.of(constraints);
 	}
 	
-	public T process(Object obj) throws InvalidArgumentException {
+	public T process(Object obj, ClassLoader classLoader) throws InvalidArgumentException {
 		try {
 			T value = this.type.cast(obj);
 			this.validateConstraints(value);

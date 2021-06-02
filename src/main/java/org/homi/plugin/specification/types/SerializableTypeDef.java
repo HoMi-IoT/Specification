@@ -1,4 +1,4 @@
-package org.homi.plugin.specification;
+package org.homi.plugin.specification.types;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,19 +18,21 @@ public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 	}
 
 	@Override
-	public T process(Object obj) throws InvalidArgumentException {
+	public T process(Object obj, ClassLoader classLoader) throws InvalidArgumentException {
 		if (!(obj instanceof Serializable)) {
 			throw new InvalidArgumentException("Expected argument of type [" + Serializable.class.getName()
 					+ " but received type" + Object.class.getName() + "]");
 		}
-		return srializeThenDecerialize(obj);
+		if(classLoader == null)
+			classLoader = this.getType().getClassLoader();
+		return srializeThenDecerialize(obj, classLoader);
 	}
 
-	private T srializeThenDecerialize(Object obj) throws InvalidArgumentException {
+	private T srializeThenDecerialize(Object obj, ClassLoader classLoader) throws InvalidArgumentException {
 		try {
 			byte[] serial = serializeToByteArray(obj);
-			Object temp = decerializeFromByteArray(serial);
-			return this.getType().cast(temp);
+			Object temp = decerializeFromByteArray(serial, classLoader);
+			return (T) temp;
 		} catch (IOException | ClassNotFoundException e) {
 			throw new InvalidArgumentException(
 					"Error serializing  type [" + Serializable.class.getName() + " to " + Object.class.getName() + "]", e);
@@ -45,9 +47,9 @@ public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 		}
 	}
 	
-	private Object decerializeFromByteArray(byte[] serial) throws IOException, ClassNotFoundException {
+	private Object decerializeFromByteArray(byte[] serial, ClassLoader classLoader) throws IOException, ClassNotFoundException {
 		try (ByteArrayInputStream bais = new ByteArrayInputStream(serial);
-				ObjectInputStream ois = new ObjectInputStream(bais)) {
+				ObjectInputStream ois = new CustomObjectInputStream(bais, classLoader)) {
 			Object temp = ois.readObject();
 			return temp;
 		}

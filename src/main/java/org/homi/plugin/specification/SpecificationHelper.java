@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.homi.plugin.specification.types.SerializableTypeDef;
+import org.homi.plugin.specification.types.TypeDef;
+
 public abstract class SpecificationHelper {
 	
 	@SafeVarargs
@@ -32,4 +35,5 @@ public abstract class SpecificationHelper {
 			return new TypeDef<>((Class<?>)parameterType);
 		throw new Exception(); 
 	}
+	
 }
