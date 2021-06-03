@@ -19,13 +19,31 @@ public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 
 	@Override
 	public T process(Object obj, ClassLoader classLoader) throws InvalidArgumentException {
+		if(obj == null)
+			return null;
 		if (!(obj instanceof Serializable)) {
 			throw new InvalidArgumentException("Expected argument of type [" + Serializable.class.getName()
 					+ " but received type" + Object.class.getName() + "]");
 		}
 		if(classLoader == null)
 			classLoader = this.getType().getClassLoader();
-		return srializeThenDecerialize(obj, classLoader);
+		T value = srializeThenDecerialize(obj, classLoader);
+		
+		try {
+			Class<T> c;
+			try {
+				c = (Class<T>)classLoader.loadClass(this.getType().getName());
+			}catch (ClassCastException e) {
+				throw new InvalidArgumentException("idk", e);
+			}
+			value = c.cast(value);
+			
+		} catch (ClassNotFoundException e) {
+			throw new InvalidArgumentException("class not found in destination classloader "+ classLoader, e);
+		} catch (ClassCastException e) {
+			throw new InvalidArgumentException("Argument type does not match specification [expected "+ this.getType().getName() +" but received " +obj.getClass().getName()+"]" ,e);
+		}
+		return value;
 	}
 
 	private T srializeThenDecerialize(Object obj, ClassLoader classLoader) throws InvalidArgumentException {

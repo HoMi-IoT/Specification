@@ -22,7 +22,7 @@ public class TypeDef<T> {
 			this.validateConstraints(value);
 			return value;
 		} catch(ClassCastException e) {
-			throw new InvalidArgumentException("Argument type does not match specification [ expected "+ type.getName() +"but received" +obj.getClass().getName()+"]" ,e);
+			throw new InvalidArgumentException("Argument type does not match specification [ expected "+ type.getName() +" but received " +obj.getClass().getName()+"]" ,e);
 		}
 	}
 	
