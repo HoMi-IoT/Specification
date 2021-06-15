@@ -32,9 +32,9 @@ public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 		try {
 			Class<T> c;
 			try {
-				c = (Class<T>)classLoader.loadClass(this.getType().getName());
+				c = (Class<T>)Class.forName(this.getType().getName(), false, classLoader);
 			}catch (ClassCastException e) {
-				throw new InvalidArgumentException("idk", e);
+				throw new InvalidArgumentException(e);
 			}
 			value = c.cast(value);
 			
