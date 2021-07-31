@@ -51,9 +51,14 @@ public class SerializableTypeDef<T extends Serializable> extends TypeDef<T> {
 			byte[] serial = serializeToByteArray(obj);
 			Object temp = decerializeFromByteArray(serial, classLoader);
 			return (T) temp;
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
 			throw new InvalidArgumentException(
-					"Error serializing  type [" + Serializable.class.getName() + " to " + Object.class.getName() + "]", e);
+					"IO exception Error serializing type [" + Serializable.class.getName() + " to " + obj.getClass().getName() + "]", e);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new InvalidArgumentException(
+					"Class not found: Error serializing type [" + Serializable.class.getName() + " to " + obj.getClass().getName() + "]", e);
 		}
 	}
 
